@@ -123,9 +123,9 @@ def test_key_deletion():
     assert (2, 1) == ks.details()
     assert not os.path.exists(filepath)
 
-    ks.delete_key("BB2D3F20233286371C3123D5209940B9669ED621", whichkey="both")
-    assert not ks.get_keys(name="Test user")
-    assert not ks.get_keys(email="test@gmail.com")
+    # ks.delete_key("BB2D3F20233286371C3123D5209940B9669ED621", whichkey="both")
+    # assert not ks.get_keys(name="Test user")
+    # assert not ks.get_keys(email="test@gmail.com")
 
     # Now delete both public and secret
     assert ks.get_keys(name="test key")
