@@ -102,6 +102,8 @@ def test_key_deletion():
     ks.import_cert("tests/files/store/secret.asc")
     assert (3, 2) == ks.details()
 
+    assert ks.get_keys(name="Test user")
+    assert ks.get_keys(email="test@gmail.com")
     # Now let us delete one public key
     filepath = os.path.join(
         tempdir.name, "BB2D3F20233286371C3123D5209940B9669ED621.pub"
@@ -121,7 +123,12 @@ def test_key_deletion():
     assert (2, 1) == ks.details()
     assert not os.path.exists(filepath)
 
+    ks.delete_key("BB2D3F20233286371C3123D5209940B9669ED621", whichkey="both")
+    assert not ks.get_keys(name="Test user")
+    assert not ks.get_keys(email="test@gmail.com")
+
     # Now delete both public and secret
+    assert ks.get_keys(name="test key")
     ks.delete_key("6AC6957E2589CB8B5221F6508ADA07F0A0F7BA99")
     assert (1, 0) == ks.details()
     for extension in ["pub", "sec"]:
@@ -129,6 +136,9 @@ def test_key_deletion():
             tempdir.name, f"6AC6957E2589CB8B5221F6508ADA07F0A0F7BA99.{extension}"
         )
         assert not os.path.exists(filepath)
+
+    # Deletion should also remove from all caches
+    assert not ks.get_keys(name="test key")
 
 
 def test_key_equality():

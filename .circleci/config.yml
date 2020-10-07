@@ -43,7 +43,7 @@ common-steps:
       command: |
         . .venv/bin/activate
         source /home/circleci/.cargo/env
-        python3 -m pytest -vv
+        python3 -m pytest -vv -s
 
 version: 2
 jobs:

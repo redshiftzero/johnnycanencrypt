@@ -244,7 +244,14 @@ class KeyStore:
             for k in keys.values():
                 _delete_key_file(k.keypath)
             # Now from the cache
-            del self.fingerprints_cache[fingerprint]
+            key_value = self.fingerprints_cache[fingerprint].pop()
+
+            for cache in self.values_cache + self.emails_cache + self.names_cache:
+                for k, v in cache:
+                    if key_value == v:
+                        del cache[k]
+                    elif key_value in v:
+                        v.remove(key_value)
 
     def _find_key_paths(self, keys):
         "To find all the key paths"
